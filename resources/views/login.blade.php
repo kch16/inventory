@@ -13,7 +13,7 @@
 
                 <div class="alert alert-danger">메시지</div>
 
-            <form method="POST" action="/login">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf()
                 <div class="mb-3">
                     <label class="form-label">아이디</label>
