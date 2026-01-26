@@ -11,13 +11,14 @@
         <div class="col-md-4">
             <h4 class="mb-3">관리자 로그인</h4>
 
-                <div class="alert alert-danger">메시지</div>
-
-            <form method="POST" action="{{ route('login') }}">
+                @if(session('error'))
+                    <div class="alert alert-danger">{{session('error')}}</div>
+                @endif
+            <form method="POST" action="{{ route('login.process') }}">
                 @csrf()
                 <div class="mb-3">
-                    <label class="form-label">아이디</label>
-                    <input type="text" name="id" value="{{old('id')}}" class="form-control" required>
+                    <label class="form-label">이메일</label>
+                    <input type="text" name="email" value="{{old('email')}}" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">비밀번호</label>
