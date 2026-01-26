@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/login',[LoginContoroller::class,'showLoginForm'])->name('login');
+Route::post('/login',[LoginContoroller::class,'Login'])->name('login.process');
