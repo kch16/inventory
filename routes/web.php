@@ -8,6 +8,8 @@ Route::middleware('auth')->group(function(){
         $title = '대시보드';
         return view('dashboard', compact('title'));
     })->name('dashboard');
+
+    Route::get('/logout', [LoginContoroller::class, 'Logout'])->name('logout');
 });
 
 Route::get('/login',[LoginContoroller::class,'showLoginForm'])->name('login');
