@@ -13,6 +13,15 @@ class LoginContoroller extends Controller
          return view('login');
     }
 
+    public function Logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect('/login')->with('status','로그아웃 되었습니다.');
+    }
+
     public function Login(Request $request)
     {
         //입력값검증
