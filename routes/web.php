@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/logout', [LoginContoroller::class, 'Logout'])->name('logout');
     Route::get('/product/input',[ProductController::class,'Input'])->name('product.input');
+    Route::post('/product/input',[ProductController::class,'Store'])->name('product.store');
 });
 
 Route::get('/login',[LoginContoroller::class,'showLoginForm'])->name('login');
