@@ -3,27 +3,36 @@
 @section('main')
   <div class="py-4">
     <h2 class="mb-4 text-center">📝 상품 추가</h2>
-    @if(session('errpr'))
-        <div class="alert alert-danger text-center">{{session('error')}}</div>
-    @endif
-    <form method="post" action="/product/input" enctype="multipart/form-data" class="mx-auto" style="max-width: 600px;">
+    <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data" class="mx-auto" style="max-width: 600px;">
        @csrf
         
         <div class="mb-3">
             <label class="form-label">상품명</label>
             <input type="text" name="name" class="form-control" value="{{old('name')}}" required>
+            @error('name')
+                <div class="alert alert-danger text-center">{{$message}}</div>
+            @enderror
         </div>
         <div class="mb-3">
             <label class="form-label">SKU</label>
             <input type="text" name="sku" class="form-control" value="{{old('sku')}}" required>
+            @error('sku')
+                <div class="alert alert-danger text-center">{{$message}}</div>
+            @enderror
         </div>
         <div class="mb-3">
             <label class="form-label">수량</label>
             <input type="number" name="quantity" class="form-control" value="" required>
+            @error('quantity')
+                <div class="alert alert-danger text-center">{{$message}}</div>
+            @enderror
         </div>
         <div class="mb-3">
             <label class="form-label">가격 (원)</label>
             <input type="number" step="0.01" name="price" class="form-control" value="" required>
+            @error('price')
+                <div class="alert alert-danger text-center">{{$message}}</div>
+            @enderror
         </div>
         <div class="mb-3">
             <label class="form-label">상품 이미지</label>
