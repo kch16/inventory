@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function Index(){
+        $title='상품목록';
+        $products = Product::searchKeyword();
+        return view('product.list',compact('title','products'));
+    }
+
     public function Input(){
         $title='상품추가';
         return view('product.input',compact('title'));
