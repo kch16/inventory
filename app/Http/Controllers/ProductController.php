@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class ProductController extends Controller
 {
@@ -80,5 +81,47 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product')->with('success','상품이 삭제되었습니다.');
+    }
+
+    public function Edit(Product $product)
+    {
+        $title = "상품수정";
+        return view('product.edit', compact('product','title'));
+    }
+
+    public function Update(Request $request, Product $product)
+    {
+        //입력값 검증
+        $request->validate([
+            'name' => 'required|string',
+            'sku' => 'required|string|unique:products,sku,' . $product->id,
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        //데이터 업데이트
+        $product->name = $request->input('name');
+        $product->sku = $request->input('sku');
+        $product->price = $request->input('price');
+        if($request->hasFile('image'))
+        {
+            if($product->image && Storage::disk('publice')->exists($product->image))
+            {
+                Storage::disk('public')->delete($product->image);
+                //storage 파사드를 이용해 삭제
+                //저장 장치가 변하더라도 코드 수정없이 대응
+            }
+
+            $path = $request->file('image')->store('uploades','public');
+            //$path=Storage::disk('public')->putFile('uploads',$request->file('image));
+            //주석과 같이 동작
+            $product->image=$path;
+        }
+
+        //저장
+        $product->save();
+
+        //응답
+        return redirect()->route('product')->with('success','상품이 수정됩니다.');
     }
 }
