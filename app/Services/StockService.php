@@ -41,23 +41,23 @@ class StockService
 
     public function adjust(Product $product, $type, $amount): void
     {
-        if(in_array($type,['in','out']))
+        if(!in_array($type,['in','out']))
         {
             throw ValidationException::withMessages(['action'=>'실행은 입고/출고 이어야 합니다.']);
         }
 
         if($amount <= 0)
         {
-            throw ValidationException::withMessages(['action'=>'수량은 1이상이어야 합니다.']);
+            throw ValidationException::withMessages(['amount'=>'수량은 1이상이어야 합니다.']);
         }
 
         DB::transaction(function() use($product,$type,$amount){
             $p = Product::whereKey($product->getKey())->lockForUpdate()->first();
-            $newQty=$type==='in'?$p->quantity+$amount:$p->quantity-$amount;
+            $newQty = $type === 'in' ? $p->quantity+$amount:$p->quantity-$amount;
 
             if($newQty < 0)
             {
-                throw ValidationException::withMessages(['action'=>'현재 재고보다 많은 출고는 불가합니다.']);
+                throw ValidationException::withMessages(['amount'=>'현재 재고보다 많은 출고는 불가합니다.']);
             }
 
             $p->quantity=$newQty;
