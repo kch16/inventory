@@ -1,9 +1,10 @@
 @extends('layout')
 
 @section('main')
-<h4>입고 처리</h4>
-
-<div class="alert alert-danger">에러메시지</div>
+<h4>입출고 처리</h4>
+@error('amount')
+    <div class="alert alert-danger">{{$message}}</div>
+@enderror
 
 <form method="post" action="">
     @csrf
