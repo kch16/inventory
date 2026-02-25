@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\HttpCache\Store;
+//use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
         return view('product.input',compact('title'));
     }
 
-    public function Store(Request $request)
+    public function Store(Request $request, StockService $stock)
     {
         /*
         if(empty($request->input('name')))
@@ -50,7 +51,7 @@ class ProductController extends Controller
         $arr = [
             'name'=>$request->input('name'),
             'sku'=>$request->input('sku'),
-            'quantity'=>$request->input('quantity'),
+            'quantity'=>0,
             'price'=>$request->input('price'),
         ];
 
@@ -63,10 +64,15 @@ class ProductController extends Controller
         }
 
         //대량할당
-        Product::create($arr);
+        $product = Product::create($arr);
+
+        //초기 재고가 있으면 세팅
+        if(isset($request->quantity) && $request->quantity > 0)
+        {
+            $stock->setInitialStock($product,(int) $request->quantity);
+        }
 
         return redirect()->route('dashboard')->with('success','등록되었습니다.');
-
     }
 
     public function Destroy($id)
