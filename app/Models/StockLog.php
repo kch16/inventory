@@ -26,4 +26,14 @@ class StockLog extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function getChangeTypeLabelAttribute():string
+    {
+        return $this->change_type === 'in' ? '입고' : '출고';
+    }
+
+    public function getSignedAmountAttribute():int
+    {
+        return $this->change_type === 'in' ? (int) $this->change_amount : -(int) $this->change_amount;
+    }
 }
