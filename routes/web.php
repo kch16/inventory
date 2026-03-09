@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginContoroller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\StockLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +23,9 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/stock/input/{id}',[StockLogController::class,'Input'])->name('stock.input');
     Route::post('/stock/input/{id}',[StockLogController::class,'Store'])->name('stock.Store');
-
     Route::get('/stock',[StockLogController::class,'Index'])->name('stock.list');
+
+    Route::get('/stats',[StatsController::class,'Index'])->name('stats');
 });
 
 Route::get('/login',[LoginContoroller::class,'showLoginForm'])->name('login');
