@@ -31,7 +31,7 @@
             <button class="btn btn-outline-secondary w-100">검색</button>
         </div>
         <div class="col-md-2">
-            <a href="{{route('products.export')}}" class="btn btn-outline-primary w-100">엑셀 다운</a>
+            <a href="{{route('products.export',request()->query())}}" class="btn btn-outline-primary w-100">엑셀 다운</a>
         </div>
 
     </form>
